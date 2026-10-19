@@ -19,13 +19,31 @@ mvn test
 
 This runs the whole suite from `testng.xml`: 6 tests, in parallel on 3 threads, in Chrome.
 
+Any setting can be overridden from the command line, for example:
+
+```bash
+mvn test -Dheadless=true -Dbrowser=firefox
+```
+
 Settings are in `src/test/resources/config.properties`:
 
 ```properties
 browser=chrome          # chrome | firefox | edge
 base.url=https://www.saucedemo.com
 timeout.seconds=10      # explicit wait timeout
+headless=false          # true on CI servers with no screen
 ```
+
+## Continuous integration (Jenkins)
+
+The `Jenkinsfile` defines the pipeline as code:
+
+1. Polls GitHub for new commits (every ~5 minutes).
+2. Runs `mvn clean test -Dheadless=true` (headless Chrome, since CI has no screen).
+3. Publishes the TestNG results (JUnit XML), so each build shows passed/failed tests and a trend chart.
+4. Archives failure screenshots from `target/screenshots/`.
+
+Failed tests mark the build **UNSTABLE** (yellow) rather than FAILED (red), so the test report is always published.
 
 ## Project structure
 

@@ -53,12 +53,24 @@ public final class ConfigReader {
     //         - Fail fast if the key is missing or blank, naming the key in the message.
     //         - Trim the value before returning it.
     //         Look up: String.isBlank vs isEmpty.
+    // Layer 10: a -D system property wins over the file, e.g. "mvn test -Dheadless=true" on Jenkins,
+    // so CI can change settings without editing config.properties.
     public String getString(String key) {
-        String value = properties.getProperty(key);
+        String value = System.getProperty(key, properties.getProperty(key));
         if (value == null || value.isBlank()) {
             throw new IllegalStateException("Missing key '" + key + "' in " + CONFIG_FILE);
         }
         return value.trim();
+    }
+
+    // Layer 10: strict true/false - a typo like "ture" fails fast instead of silently meaning false.
+    public boolean getBoolean(String key) {
+        String value = getString(key);
+        if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
+            return Boolean.parseBoolean(value);
+        }
+        throw new IllegalStateException(
+                "Key '" + key + "' in " + CONFIG_FILE + " must be true or false, but was '" + value + "'");
     }
 
     // TODO 8: Write a getter that returns the timeout as a java.time.Duration.

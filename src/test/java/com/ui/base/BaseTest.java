@@ -30,7 +30,7 @@ public abstract class BaseTest {
     public void setUp() {
         ConfigReader config = ConfigReader.getInstance();
         String browser = config.getString("browser");
-        DriverManager.setDriver(DriverFactory.createDriver(browser));
+        DriverManager.setDriver(DriverFactory.createDriver(browser, config.getBoolean("headless")));
         DriverManager.getDriver().get(config.getString("base.url"));
     }
 
