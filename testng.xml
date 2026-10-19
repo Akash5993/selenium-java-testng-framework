@@ -1,0 +1,27 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- TODO (Layer 9): Run tests in parallel.
+     - parallel="methods": each @Test method can run on its own thread at the same time
+       (other options: classes, tests, instances).
+     - thread-count="3": at most 3 threads, so at most 3 browsers open at once.
+     - This is safe ONLY because DriverManager keeps one WebDriver per thread (ThreadLocal),
+       BaseTest opens a fresh browser per test, ConfigReader is read-only, and page objects are created per test.
+     - DataProvider rows still run one after another inside their method's thread
+       (that would need @DataProvider(parallel = true)).
+     Look up: TestNG parallel attribute, thread-count. -->
+<suite name="UI Suite" parallel="methods" thread-count="3">
+    <!-- TODO (Layer 8): Register the two listener classes here, so they apply to every test in the suite:
+         add a <listeners> block containing one <listener class-name="..."/> for
+         com.ui.listeners.ScreenshotListener and one for com.ui.listeners.RetryTransformer.
+         (RetryAnalyzer is NOT listed: RetryTransformer attaches it to each @Test.)
+         Look up: TestNG <listeners> in testng.xml vs the @Listeners annotation. -->
+    <listeners>
+        <listener class-name="com.ui.listeners.ScreenshotListener"/>
+        <listener class-name="com.ui.listeners.RetryTransformer"/>
+    </listeners>
+
+    <test name="UI Tests">
+        <packages>
+            <package name="com.ui.tests"/>
+        </packages>
+    </test>
+</suite>

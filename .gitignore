@@ -1,0 +1,11 @@
+# Maven build output, reports and failure screenshots
+target/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Local assistant notes (not part of the framework)
+CLAUDE.md
+.claude/
