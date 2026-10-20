@@ -1,5 +1,7 @@
 # UI Automation Framework: Selenium + Java + TestNG
 
+[![UI Tests](https://github.com/Akash5993/selenium-java-testng-framework/actions/workflows/ui-tests.yml/badge.svg)](https://github.com/Akash5993/selenium-java-testng-framework/actions/workflows/ui-tests.yml)
+
 A UI test automation framework for [saucedemo.com](https://www.saucedemo.com), built layer by layer using common enterprise patterns: Page Object Model, Factory, Singleton, ThreadLocal driver management, data-driven tests, listeners and parallel execution.
 
 ## Tech stack
@@ -37,7 +39,15 @@ timeout.seconds=10
 headless=false
 ```
 
-## Continuous integration (Jenkins)
+## Continuous integration
+
+The same suite runs in two CI systems. The framework doesn't care which one runs it.
+
+### GitHub Actions (cloud)
+
+`.github/workflows/ui-tests.yml` runs on every push and pull request to `main` on GitHub's Linux machines: Java 17, `mvn -B clean test -Dheadless=true`, then uploads the test reports (and failure screenshots when a test fails) as downloadable artifacts. The badge above shows the latest result.
+
+### Jenkins (self-hosted)
 
 The `Jenkinsfile` defines the pipeline as code:
 
