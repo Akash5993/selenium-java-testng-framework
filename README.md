@@ -28,10 +28,13 @@ mvn test -Dheadless=true -Dbrowser=firefox
 Settings are in `src/test/resources/config.properties`:
 
 ```properties
-browser=chrome          # chrome | firefox | edge
+# chrome | firefox | edge
+browser=chrome
 base.url=https://www.saucedemo.com
-timeout.seconds=10      # explicit wait timeout
-headless=false          # true on CI servers with no screen
+# explicit wait timeout
+timeout.seconds=10
+# true on CI servers with no screen
+headless=false
 ```
 
 ## Continuous integration (Jenkins)
